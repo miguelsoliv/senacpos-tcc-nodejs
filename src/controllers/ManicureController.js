@@ -1,4 +1,5 @@
 const Manicure = require('../models/Manicure')
+const parseStringToArray = require('../utils/parseStringToArray')
 
 /*
 index (listar)
@@ -14,22 +15,29 @@ module.exports = {
 
     return response.json(manicures)
   },
+
   async store(request, response) {
-    const { name, photo_url, services, schedule } = request.body
+    try {
+      const { name, photo_url, services, schedule } = request.body
 
-    const scheduleDaysArray = schedule.days.split(',').map(day => day.trim())
-    const scheduleHoursArray = schedule.hours.split(';').map(hour => hour.trim())
+      const scheduleDaysArray = parseStringToArray(schedule.days)
+      const scheduleHoursArray = parseStringToArray(schedule.hours, ';')
 
-    const manicure = await Manicure.create({
-      name,
-      photo_url,
-      services,
-      schedule: {
-        days: scheduleDaysArray,
-        hours: scheduleHoursArray
-      }
-    })
+      const manicure = await Manicure.create({
+        name,
+        photo_url,
+        services,
+        schedule: {
+          days: scheduleDaysArray,
+          hours: scheduleHoursArray
+        }
+      })
 
-    return response.json(manicure)
+      return response.json(manicure)
+    } catch {
+      return response.status(400).json({
+        message: 'Manicure registration failed'
+      })
+    }
   }
 }
