@@ -1,8 +1,10 @@
 const { Router } = require('express')
-const AuthController = require('./controllers/AuthController')
-const UserController = require('./controllers/UserController')
-const ManicureController = require('./controllers/ManicureController')
-const authMiddleware = require("./middleware/auth")
+
+const AuthController = require('./app/controllers/AuthController')
+const UserController = require('./app/controllers/UserController')
+const ManicureController = require('./app/controllers/ManicureController')
+
+const authMiddleware = require("./app/middlewares/auth")
 
 const routes = Router()
 

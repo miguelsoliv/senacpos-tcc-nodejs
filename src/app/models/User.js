@@ -2,10 +2,15 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
+const authConfig = require('../../config/auth')
+
 const UserSchema = new mongoose.Schema({
   name: String,
   email: String,
-  password: String
+  password: {
+    type: String,
+    select: false
+  }
 })
 
 UserSchema.pre('save', async function hashPassword(next) {
@@ -20,8 +25,8 @@ UserSchema.methods = {
   },
 
   generateToken() {
-    return jwt.sign({ id: this.id }, 'secret', {
-      expiresIn: 86400
+    return jwt.sign({ id: this.id }, authConfig.secret, {
+      expiresIn: '7d'
     })
   }
 }

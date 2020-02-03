@@ -41,7 +41,12 @@ module.exports = {
         password
       })
 
-      return response.json(user)
+      user.password = undefined
+
+      return response.json({
+        user,
+        token: user.generateToken()
+      })
     } catch {
       return response.status(400).json({ message: 'User registrarion failed' })
     }

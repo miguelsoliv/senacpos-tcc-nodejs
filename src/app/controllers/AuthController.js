@@ -13,7 +13,7 @@ module.exports = {
     try {
       const { email, password } = request.body
 
-      const user = await User.findOne({ email })
+      const user = await User.findOne({ email }).select('+password')
 
       if (!user) {
         return response.json({ message: 'User not found' })
@@ -22,6 +22,8 @@ module.exports = {
       if (!(await user.compareHash(password))) {
         return response.json({ message: 'Invalid password' })
       }
+
+      user.password = undefined
 
       return response.json({
         user,

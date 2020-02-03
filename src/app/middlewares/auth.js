@@ -1,5 +1,8 @@
 const jwt = require('jsonwebtoken')
+
 const { promisify } = require('util')
+
+const authConfig = require('../../config/auth')
 
 module.exports = async (request, response, next) => {
   const authHeader = request.headers.authorization
@@ -10,8 +13,12 @@ module.exports = async (request, response, next) => {
 
   const [scheme, token] = authHeader.split(' ')
 
+  if (!/^Bearer$/i.test(scheme)) {
+    return response.status(401).send({ error: 'Token malformatted' })
+  }
+
   try {
-    const decoded = await promisify(jwt.verify)(token, 'secret')
+    const decoded = await promisify(jwt.verify)(token, authConfig.secret)
 
     request.userId = decoded.id
 

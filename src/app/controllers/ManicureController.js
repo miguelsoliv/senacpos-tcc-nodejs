@@ -1,5 +1,6 @@
 const Manicure = require('../models/Manicure')
-const parseStringToArray = require('../utils/parseStringToArray')
+
+const parseStringToArray = require('../../utils/parseStringToArray')
 
 /*
 index (listar)
