@@ -9,7 +9,8 @@
 - [Mongoose](https://github.com/Automattic/mongoose): `npm i mongoose`
 - [Nodemon](https://github.com/remy/nodemon): `npm i nodemon -D`
 - [bcrypt.js](https://github.com/dcodeIO/bcrypt.js): `npm i bcryptjs`
-- [JSON Web Token](https://github.com/auth0/node-jsonwebtoken): `npm i jsonwebtoken`
+- [JSON Web Token (JWT)](https://github.com/auth0/node-jsonwebtoken): `npm i jsonwebtoken`
+- [Nodemailer](https://github.com/nodemailer/nodemailer): `npm i nodemailer`
 
 ## License
 

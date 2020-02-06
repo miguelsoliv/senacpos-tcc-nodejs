@@ -20,9 +20,12 @@ routes.get('/manicures', ManicureController.index)
 routes.post('/manicures', ManicureController.store)
 
 routes.post('/authenticate', AuthController.authenticate)
+routes.post('/forgot-password', AuthController.forgotPassword)
+routes.post('/validate-token', AuthController.validateToken)
 
 routes.post('/users', UserController.store)
 routes.use(authMiddleware)
 routes.get('/users/:id', UserController.show)
+routes.put('/users/:id', UserController.update)
 
 module.exports = routes

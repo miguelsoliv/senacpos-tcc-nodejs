@@ -10,6 +10,14 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     select: false
+  },
+  generatedPassword: {
+    type: String,
+    select: false
+  },
+  generatedPasswordExpireAt: {
+    type: Date,
+    select: false
   }
 })
 
@@ -19,9 +27,16 @@ UserSchema.pre('save', async function hashPassword(next) {
   this.password = await bcrypt.hash(this.password, 8)
 })
 
+UserSchema.pre('findOneAndUpdate', async function hashPassword(next) {
+  if (!this._update.password) next()
+
+  this._update.password = await bcrypt.hash(this._update.password, 8)
+})
+
 UserSchema.methods = {
-  compareHash(hash) {
-    return bcrypt.compare(hash, this.password)
+  compareHash(hash, compareToPassword = true) {
+    return bcrypt.compare(hash, compareToPassword ?
+      this.password : this.generatedPassword)
   },
 
   generateToken() {

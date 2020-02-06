@@ -8,13 +8,13 @@ module.exports = async (request, response, next) => {
   const authHeader = request.headers.authorization
 
   if (!authHeader) {
-    return response.status(401).send({ error: 'No token provided' })
+    return response.status(401).send({ message: 'No token provided' })
   }
 
   const [scheme, token] = authHeader.split(' ')
 
   if (!/^Bearer$/i.test(scheme)) {
-    return response.status(401).send({ error: 'Token malformatted' })
+    return response.status(401).send({ message: 'Token malformatted' })
   }
 
   try {
@@ -24,6 +24,6 @@ module.exports = async (request, response, next) => {
 
     return next()
   } catch {
-    return response.status(401).send({ error: 'Token invalid' })
+    return response.status(401).send({ message: 'Invalid token' })
   }
 }

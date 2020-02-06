@@ -36,9 +36,7 @@ module.exports = {
 
       return response.json(manicure)
     } catch {
-      return response.status(400).json({
-        message: 'Manicure registration failed'
-      })
+      return response.status(400).json({ message: 'Manicure registration failed' })
     }
   }
 }

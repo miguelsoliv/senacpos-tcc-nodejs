@@ -48,7 +48,27 @@ module.exports = {
         token: user.generateToken()
       })
     } catch {
-      return response.status(400).json({ message: 'User registrarion failed' })
+      return response.status(400).json({ message: 'User registration failed' })
     }
+  },
+
+  async update(request, response) {
+    const { id } = request.params
+    const { name, email, password } = request.body
+
+    const updatedData = {}
+
+    if (name)
+      updatedData.name = name
+
+    if (email)
+      updatedData.email = email
+
+    if (password)
+      updatedData.password = password
+
+    const user = await User.findByIdAndUpdate(id, updatedData)
+
+    return response.json(user)
   }
 }
