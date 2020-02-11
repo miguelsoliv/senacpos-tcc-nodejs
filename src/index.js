@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 const mongoose = require('mongoose')
 
@@ -5,7 +7,7 @@ const routes = require('./routes')
 
 const app = express()
 
-mongoose.connect('mongodb+srv://senacpos-tcc:senacpos-tcc@cluster0-qbsht.mongodb.net/tcc-pos?retryWrites=true&w=majority', {
+mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
@@ -14,4 +16,4 @@ mongoose.connect('mongodb+srv://senacpos-tcc:senacpos-tcc@cluster0-qbsht.mongodb
 app.use(express.json())
 app.use(routes)
 
-app.listen(3333)
+app.listen(process.env.PORT || 3333)

@@ -6,8 +6,6 @@ const { promisify } = require('util')
 const User = require('../models/User')
 const mailer = require('../../modules/mailer')
 const mailMessageTemplate = require('../../utils/mailMessageTemplate')
-const mailConfig = require('../../config/mail')
-const authConfig = require('../../config/auth')
 
 /*
 index (listar)
@@ -95,12 +93,13 @@ module.exports = {
     })
 
     mailer.sendMail({
-      from: `Suporte - Boutique do Esmalte <${mailConfig.user}>`,
+      from: `Suporte - Boutique do Esmalte <${process.env.EMAIL_USER}>`,
       to: email,
       subject: 'Esqueceu sua senha?',
       html: mailMessageTemplate(randomPassword)
     }, (err) => {
       if (err) {
+        console.log(err)
         return response.status(400).json({ message: 'Could not send forgot password email' })
       }
 
@@ -111,7 +110,7 @@ module.exports = {
     const { token } = request.body
 
     try {
-      await promisify(jwt.verify)(token, authConfig.secret)
+      await promisify(jwt.verify)(token, process.env.JWT_SECRET)
       return response.json({ message: 'Valid token' })
     } catch {
       return response.status(401).send({ message: 'Invalid token' })

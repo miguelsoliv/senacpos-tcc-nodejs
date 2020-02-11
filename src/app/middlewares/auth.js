@@ -2,8 +2,6 @@ const jwt = require('jsonwebtoken')
 
 const { promisify } = require('util')
 
-const authConfig = require('../../config/auth')
-
 module.exports = async (request, response, next) => {
   const authHeader = request.headers.authorization
 
@@ -18,7 +16,7 @@ module.exports = async (request, response, next) => {
   }
 
   try {
-    const decoded = await promisify(jwt.verify)(token, authConfig.secret)
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
 
     request.userId = decoded.id
 
