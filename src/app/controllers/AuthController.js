@@ -30,24 +30,22 @@ module.exports = {
       const now = new Date()
       let isPassOk = false
 
-      if (user.generatedPassword) {
-        if (now > user.generatedPasswordExpireAt) {
-          return response.json({ message: 'Token expired, generate a new one' })
-        }
-
-        if (await user.compareHash(password, false)) {
-          isPassOk = true
-        }
+      if (await user.compareHash(password)) {
+        isPassOk = true
       }
 
-      if (!isPassOk) {
-        if (await user.compareHash(password)) {
-          isPassOk = true
-        }
-      }
-
-      if (!isPassOk) {
+      if (!isPassOk && !user.generatedPassword) {
         return response.json({ message: 'Invalid password' })
+      }
+
+      if (!isPassOk && user.generatedPassword) {
+        if (now > user.generatedPasswordExpireAt) {
+          return response.json({ message: 'Reset password token expired, ask for a new one' })
+        }
+
+        if (!await user.compareHash(password, false)) {
+          return response.json({ message: 'Invalid password' })
+        }
       }
 
       user.password = undefined
@@ -83,7 +81,7 @@ module.exports = {
     const hashedPassword = await bcrypt.hash(randomPassword, 8)
 
     const expiresAt = new Date()
-    expiresAt.setHours(expiresAt.getHours() + 3)
+    expiresAt.setHours(expiresAt.getHours() + 4)
 
     await User.findByIdAndUpdate(user.id, {
       '$set': {
