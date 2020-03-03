@@ -4,8 +4,10 @@ const jwt = require('jsonwebtoken')
 const { promisify } = require('util')
 
 const User = require('../models/User')
+
 const mailer = require('../../modules/mailer')
-const mailMessageTemplate = require('../../utils/mailMessageTemplate')
+
+const { mailMessageTemplate, changeTimezone } = require('../../utils')
 
 /*
 index (listar)
@@ -27,7 +29,7 @@ module.exports = {
         return response.json({ message: 'User not found' })
       }
 
-      const now = new Date()
+      const now = changeTimezone(new Date(), 'America/Sao_Paulo')
       let isPassOk = false
 
       if (await user.compareHash(password)) {
@@ -40,7 +42,9 @@ module.exports = {
 
       if (!isPassOk && user.generatedPassword) {
         if (now > user.generatedPasswordExpireAt) {
-          return response.json({ message: 'Reset password token expired, ask for a new one' })
+          return response.json({
+            message: 'Reset password token expired, ask for a new one'
+          })
         }
 
         if (!await user.compareHash(password, false)) {
@@ -64,7 +68,9 @@ module.exports = {
         token: user.generateToken()
       })
     } catch {
-      return response.status(400).json({ message: 'User authentication failed' })
+      return response.status(400).json({
+        message: 'User authentication failed'
+      })
     }
   },
   async forgotPassword(request, response) {
@@ -80,7 +86,7 @@ module.exports = {
     const randomPassword = Math.random().toString(36).substr(2, passwordLength)
     const hashedPassword = await bcrypt.hash(randomPassword, 8)
 
-    const expiresAt = new Date()
+    const expiresAt = changeTimezone(new Date(), 'America/Sao_Paulo')
     expiresAt.setHours(expiresAt.getHours() + 4)
 
     await User.findByIdAndUpdate(user.id, {
@@ -97,8 +103,9 @@ module.exports = {
       html: mailMessageTemplate(randomPassword)
     }, (err) => {
       if (err) {
-        console.log(err)
-        return response.status(400).json({ message: 'Could not send forgot password email' })
+        return response.status(400).json({
+          message: 'Could not send forgot password email'
+        })
       }
 
       return response.json({ email: 'Email successfully sent' })

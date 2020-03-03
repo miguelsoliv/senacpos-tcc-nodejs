@@ -4,12 +4,12 @@ const ManicureSchema = new mongoose.Schema({
   name: String,
   photo_url: String,
   services: {
-    name: String,
-    price: Number
+    names: [String],
+    prices: [Number]
   },
   schedule: {
     days: [String],
-    hours: [String]
+    hours: [[String]]
   }
 })
 

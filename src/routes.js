@@ -1,8 +1,8 @@
 const { Router } = require('express')
 
-const AuthController = require('./app/controllers/AuthController')
-const UserController = require('./app/controllers/UserController')
-const ManicureController = require('./app/controllers/ManicureController')
+const {
+  AuthController, UserController, ManicureController, ScheduleController
+} = require('./app/controllers')
 
 const authMiddleware = require("./app/middlewares/auth")
 
@@ -27,5 +27,7 @@ routes.post('/users', UserController.store)
 routes.use(authMiddleware)
 routes.get('/users/:id', UserController.show)
 routes.put('/users/:id', UserController.update)
+routes.post('/schedule', ScheduleController.store)
+routes.get('/schedule/:id_manicure', ScheduleController.index)
 
 module.exports = routes

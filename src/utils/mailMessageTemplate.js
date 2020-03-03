@@ -1,4 +1,4 @@
-module.exports = function mailMessageTemplate(randomPassword) {
+module.exports = (randomPassword) => {
   return `<h2>Sua nova senha é: ${randomPassword}</h2>
 
     <p>Ao logar no aplicativo sua senha aleatória será deletada, então lembre-se de trocar sua senha assim que entrar!!
