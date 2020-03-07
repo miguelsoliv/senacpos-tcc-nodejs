@@ -1,5 +1,7 @@
 const User = require('../models/User')
 
+const { parseStringToArray, parseHoursToArray } = require('../../utils')
+
 /*
 index (listar)
 show (único registro retornado)
@@ -9,25 +11,11 @@ destroy (exclusão)
 */
 
 module.exports = {
-  async show(request, response) {
-    const { id } = request.params
-
-    try {
-      const user = await User.findById(id)
-
-      if (!user) {
-        return response.json({ message: 'User not found' })
-      }
-
-      return response.json(user)
-    } catch {
-      return response.status(400).json({ message: 'Can\'t get user info' })
-    }
-  },
-
   async store(request, response) {
     try {
-      const { name, email, password } = request.body
+      const {
+        name, email, password, photo_url, services, schedule
+      } = request.body
 
       let user = await User.findOne({ email })
 
@@ -35,11 +23,36 @@ module.exports = {
         return response.json({ message: 'User already exists' })
       }
 
-      user = await User.create({
-        name,
-        email,
-        password
-      })
+      if (services) {
+        const servicesNamesArray = parseStringToArray(services.names)
+        const servicesPricesArray = parseStringToArray(services.prices, ';')
+
+        const scheduleDaysArray = parseStringToArray(schedule.days)
+        const scheduleHoursArray = parseStringToArray(schedule.hours, ';')
+
+        const hoursArray = parseHoursToArray(scheduleHoursArray)
+
+        user = await User.create({
+          name,
+          email,
+          password,
+          photo_url,
+          services: {
+            names: servicesNamesArray,
+            prices: servicesPricesArray
+          },
+          schedule: {
+            days: scheduleDaysArray,
+            hours: hoursArray
+          }
+        })
+      } else {
+        user = await User.create({
+          name,
+          email,
+          password
+        })
+      }
 
       user.password = undefined
 
@@ -50,25 +63,5 @@ module.exports = {
     } catch {
       return response.status(400).json({ message: 'User registration failed' })
     }
-  },
-
-  async update(request, response) {
-    const { id } = request.params
-    const { name, email, password } = request.body
-
-    const updatedData = {}
-
-    if (name)
-      updatedData.name = name
-
-    if (email)
-      updatedData.email = email
-
-    if (password)
-      updatedData.password = password
-
-    const user = await User.findByIdAndUpdate(id, updatedData)
-
-    return response.json(user)
   }
 }

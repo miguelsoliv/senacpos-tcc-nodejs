@@ -9,6 +9,27 @@ const UserSchema = new mongoose.Schema({
     type: String,
     select: false
   },
+  photo_url: String,
+  services: {
+    names: {
+      type: [String],
+      default: undefined
+    },
+    prices: {
+      type: [Number],
+      default: undefined
+    }
+  },
+  schedule: {
+    days: {
+      type: [String],
+      default: undefined
+    },
+    hours: {
+      type: [[String]],
+      default: undefined
+    }
+  },
   generatedPassword: {
     type: String,
     select: false

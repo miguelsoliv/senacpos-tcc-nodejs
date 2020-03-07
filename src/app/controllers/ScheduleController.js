@@ -12,7 +12,7 @@ destroy (exclusão)
 
 module.exports = {
   async index(request, response) {
-    const { id_manicure } = request.params
+    const { id_professional } = request.params
 
     const today = changeTimezone(new Date(), 'America/Sao_Paulo')
     const todayWithoutHours = changeTimezone(
@@ -20,7 +20,7 @@ module.exports = {
       ), 'America/Sao_Paulo')
 
     const schedule = await Schedule.find({
-      id_manicure,
+      id_professional,
       marked_date: { $gte: todayWithoutHours }
     })
 
@@ -30,11 +30,11 @@ module.exports = {
   async store(request, response) {
     try {
       const {
-        id_manicure, id_user, marked_date, total, description
+        id_professional, id_client, marked_date, total, description
       } = request.body
 
       let schedule = await Schedule.findOne({
-        id_manicure,
+        id_professional,
         marked_date
       })
 
@@ -43,8 +43,8 @@ module.exports = {
       }
 
       schedule = await Schedule.create({
-        id_manicure,
-        id_user,
+        id_professional,
+        id_client,
         marked_date,
         total,
         description

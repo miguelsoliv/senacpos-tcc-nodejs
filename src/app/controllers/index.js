@@ -1,6 +1,7 @@
 module.exports = {
   AuthController: require('./AuthController'),
-  ManicureController: require('./ManicureController'),
+  UserController: require('./UserController'),
+  ProfessionalController: require('./ProfessionalController'),
   ScheduleController: require('./ScheduleController'),
-  UserController: require('./UserController')
+  ClientController: require('./ClientController')
 }

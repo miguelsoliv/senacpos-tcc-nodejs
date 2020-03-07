@@ -1,7 +1,8 @@
 const { Router } = require('express')
 
 const {
-  AuthController, UserController, ManicureController, ScheduleController
+  AuthController, UserController, ClientController, ProfessionalController,
+  ScheduleController
 } = require('./app/controllers')
 
 const authMiddleware = require("./app/middlewares/auth")
@@ -16,18 +17,17 @@ const routes = Router()
 // Route Params: request.params (Identificar um recurso na alteração ou remoção)
 // Body: request.body (Dados para criação ou alteração de um registro)
 
-routes.get('/manicures', ManicureController.index)
-routes.post('/manicures', ManicureController.store)
+routes.post('/users', UserController.store)
 
 routes.post('/authenticate', AuthController.authenticate)
 routes.post('/forgot-password', AuthController.forgotPassword)
 routes.post('/validate-token', AuthController.validateToken)
 
-routes.post('/users', UserController.store)
 routes.use(authMiddleware)
-routes.get('/users/:id', UserController.show)
-routes.put('/users/:id', UserController.update)
+routes.put('/clients/:id', ClientController.update)
+routes.get('/professionals/:id', ProfessionalController.index)
+routes.put('/professionals/:id', ProfessionalController.update)
 routes.post('/schedule', ScheduleController.store)
-routes.get('/schedule/:id_manicure', ScheduleController.index)
+routes.get('/schedule/:id_professional', ScheduleController.index)
 
 module.exports = routes

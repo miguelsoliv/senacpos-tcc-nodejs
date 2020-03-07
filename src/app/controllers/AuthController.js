@@ -22,7 +22,7 @@ module.exports = {
     try {
       const { email, password } = request.body
 
-      const user = await User.findOne({ email })
+      let user = await User.findOne({ email })
         .select('+password +generatedPassword +generatedPasswordExpireAt')
 
       if (!user) {
@@ -73,6 +73,7 @@ module.exports = {
       })
     }
   },
+
   async forgotPassword(request, response) {
     const { email } = request.body
 
@@ -111,6 +112,7 @@ module.exports = {
       return response.json({ email: 'Email successfully sent' })
     })
   },
+
   async validateToken(request, response) {
     const { token } = request.body
 
