@@ -1,7 +1,7 @@
 const { Router } = require('express')
 
 const {
-  AuthController, UserController, ClientController, ProfessionalController,
+  AuthController, UserController, CustomerController, ProfessionalController,
   ScheduleController
 } = require('./app/controllers')
 
@@ -24,7 +24,7 @@ routes.post('/forgot-password', AuthController.forgotPassword)
 routes.post('/validate-token', AuthController.validateToken)
 
 routes.use(authMiddleware)
-routes.put('/clients/:id', ClientController.update)
+routes.put('/customers/:id', CustomerController.update)
 routes.get('/professionals/:id', ProfessionalController.index)
 routes.put('/professionals/:id', ProfessionalController.update)
 routes.post('/schedule', ScheduleController.store)

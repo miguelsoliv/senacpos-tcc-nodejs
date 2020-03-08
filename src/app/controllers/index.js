@@ -3,5 +3,5 @@ module.exports = {
   UserController: require('./UserController'),
   ProfessionalController: require('./ProfessionalController'),
   ScheduleController: require('./ScheduleController'),
-  ClientController: require('./ClientController')
+  CustomerController: require('./CustomerController')
 }
