@@ -16,7 +16,7 @@ module.exports = {
 
     const professionals = await User.find({
       _id: { $ne: id },
-      services: { names: { $exists: true } }
+      services: { $exists: true }
     })
 
     return response.json(professionals)
