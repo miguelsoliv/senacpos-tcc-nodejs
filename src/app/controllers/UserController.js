@@ -32,11 +32,14 @@ module.exports = {
 
         const hoursArray = parseHoursToArray(scheduleHoursArray)
 
+        const imageParts = photo_url.split(',')
+        const buffer = Buffer.from(imageParts[1], 'base64')
+
         user = await User.create({
           name,
           email,
           password,
-          photo_url,
+          photo_url: buffer,
           services: {
             names: servicesNamesArray,
             prices: servicesPricesArray

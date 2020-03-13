@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     select: false
   },
-  photo_url: String,
+  photo_url: Buffer,
   services: {
     names: {
       type: [String],

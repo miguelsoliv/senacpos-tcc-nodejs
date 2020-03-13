@@ -44,7 +44,12 @@ module.exports = {
 
     if (password) updatedData.password = password
 
-    if (photo_url) updatedData.photo_url = photo_url
+    if (photo_url) {
+      const imageParts = photo_url.split(',')
+      const buffer = Buffer.from(imageParts[1], 'base64')
+
+      updatedData.photo_url = buffer
+    }
 
     if (services) {
       updatedData.services = {}

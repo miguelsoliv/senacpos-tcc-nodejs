@@ -13,7 +13,7 @@ mongoose.connect(process.env.MONGO_URL, {
   useFindAndModify: false
 })
 
-app.use(express.json())
+app.use(express.json({ limit: '16mb' }))
 app.use(routes)
 
 app.listen(process.env.PORT || 3333)
