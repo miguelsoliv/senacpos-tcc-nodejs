@@ -1,6 +1,6 @@
 const User = require('../models/User')
 
-const { parseStringToArray, parseHoursToArray } = require('../../utils')
+const { parseHoursToArray } = require('../../utils')
 
 /*
 index (listar)
@@ -45,30 +45,17 @@ module.exports = {
     if (password) updatedData.password = password
 
     if (photo_url) {
-      const imageParts = photo_url.split(',')
-      const buffer = Buffer.from(imageParts[1], 'base64')
+      const buffer = Buffer.from(photo_url, 'base64')
 
       updatedData.photo_url = buffer
     }
 
-    if (services) {
-      updatedData.services = {}
-
-      if (services.names)
-        updatedData.services.names = parseStringToArray(services.names)
-
-      if (services.prices)
-        updatedData.services.prices = parseStringToArray(services.prices, ';')
-    }
+    if (services) updatedData.services = services
 
     if (schedule) {
-      if (schedule.days)
-        updatedData.schedule.days = parseStringToArray(schedule.days)
-
-      if (schedule.hours) {
-        const scheduleHoursArray = parseStringToArray(schedule.hours, ';')
-
-        updatedData.schedule.hours = parseHoursToArray(scheduleHoursArray)
+      updatedData.schedule = {
+        days: schedule.days,
+        hours: parseHoursToArray(schedule.hours)
       }
     }
 

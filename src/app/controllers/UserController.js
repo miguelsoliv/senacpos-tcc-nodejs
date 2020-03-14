@@ -1,6 +1,6 @@
 const User = require('../models/User')
 
-const { parseStringToArray, parseHoursToArray } = require('../../utils')
+const { parseHoursToArray } = require('../../utils')
 
 /*
 index (listar)
@@ -24,28 +24,18 @@ module.exports = {
       }
 
       if (services) {
-        const servicesNamesArray = parseStringToArray(services.names)
-        const servicesPricesArray = parseStringToArray(services.prices, ';')
+        const hoursArray = parseHoursToArray(schedule.hours)
 
-        const scheduleDaysArray = parseStringToArray(schedule.days)
-        const scheduleHoursArray = parseStringToArray(schedule.hours, ';')
-
-        const hoursArray = parseHoursToArray(scheduleHoursArray)
-
-        const imageParts = photo_url.split(',')
-        const buffer = Buffer.from(imageParts[1], 'base64')
+        const buffer = Buffer.from(photo_url, 'base64')
 
         user = await User.create({
           name,
           email,
           password,
           photo_url: buffer,
-          services: {
-            names: servicesNamesArray,
-            prices: servicesPricesArray
-          },
+          services,
           schedule: {
-            days: scheduleDaysArray,
+            days: schedule.days,
             hours: hoursArray
           }
         })

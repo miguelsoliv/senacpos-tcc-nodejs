@@ -1,12 +1,15 @@
-const parseStringToArray = require('./parseStringToArray')
-
 module.exports = (scheduleHoursArray) => {
   const hoursArray = []
 
-  scheduleHoursArray.forEach(hourDayInterval => {
-    let hoursString = ''
-    const hourInterval = hourDayInterval.split(',')
+  scheduleHoursArray.forEach((hourDayInterval) => {
+    if (!hourDayInterval) {
+      hoursArray.push([''])
+      return
+    }
 
+    const hourInterval = hourDayInterval.split(';')
+
+    const arrayOfHours = []
     for (let index = 0; index < hourInterval.length; index++) {
       const hoursParts = hourInterval[index].split('-')
 
@@ -31,16 +34,13 @@ module.exports = (scheduleHoursArray) => {
             startHour++
           }
 
-          hoursString += `${startHour}:${startMinutes == 0 ?
-            `${startMinutes.toString()}0` : startMinutes},`
+          arrayOfHours.push(`${startHour}:${startMinutes == 0 ?
+            `${startMinutes.toString()}0` : startMinutes}`)
         }
       }
     }
 
-    hoursArray.push(
-      parseStringToArray(hoursString.substring(0, hoursString.length - 1))
-    )
-    hoursString = ''
+    hoursArray.push(arrayOfHours)
   })
 
   return hoursArray
