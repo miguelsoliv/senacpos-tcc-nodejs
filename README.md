@@ -1,26 +1,29 @@
-# Visão geral
+## Visão geral
 
 API desenvolvida em [node.js](https://nodejs.org/en/) e hospedada no [Heroku](https://heroku.com/) para realizar a comunicação entre o aplicativo e o [MongoDB](https://mongodb.com/).
 
-## Usuários
+### Usuários
 
-A cada inserção ou atualização de usuário, a senha informada é criptografada (através do bcrypt.js).
+Os usuários são divididos em: cliente e profissional. A profissional possui todos os atributos do cliente e mais "photo_url", "services" e "schedule" para diferenciação. O cliente é salvo somente com "name", "email" e "password".
 
-Os usuários são divididos em: cliente e profissional. O profissional possui todos os atributos do cliente e mais "photo_url", "services" e "schedule" para diferenciação. O cliente é salvo somente com "name", "email" e "password".
-
-## Autenticação
+### Autenticação
 
 A API possui um middleware de autenticação de usuário em certas rotas, fazendo com que o usuário tenha que enviar seu token JWT em cada requisição para provar sua autenticidade.
 
-## Requisitos funcionais
+### Requisitos funcionais
 
-1. Enviar e-mail (esqueci minha senha) via Gmail
-2. CRUD de usuários (clientes e profissionais)
+1. Enviar e-mail via Gmail
+2. CRUD de usuários
 3. CRUD de agendamento
-4. Validar token
+4. Gerar/Validar token de autenticação
 5. Autenticar usuário
 
-# Bibliotecas utilizadas
+### Requisitos não funcionais
+
+1. Aplicação de criptografia na senha do usuário a cada inserção ou alteração
+2. Ao autenticar, verificar a existência do token gerado ao ser enviado o e-mail de "esqueci minha senha"
+
+## Bibliotecas utilizadas
 
 - [Express](https://github.com/expressjs/express) : `npm i express`
 - [Mongoose](https://github.com/Automattic/mongoose) : `npm i mongoose`
