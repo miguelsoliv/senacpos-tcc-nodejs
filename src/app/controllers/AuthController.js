@@ -56,10 +56,6 @@ module.exports = {
       user.generatedPassword = undefined
       user.generatedPasswordExpireAt = undefined
 
-      if (user.photo_url) {
-        user.photo_url = Buffer.from(user.photo_url).toString('base64')
-      }
-
       await User.findByIdAndUpdate(user.id, {
         '$set': {
           generatedPassword: undefined,

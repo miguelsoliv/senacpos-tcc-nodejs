@@ -30,7 +30,7 @@ module.exports = {
   async store(request, response) {
     try {
       const {
-        id_professional, id_user, marked_date, total, description
+        id_professional, id_user, username, marked_date, total, description
       } = request.body
 
       let schedule = await Schedule.findOne({
@@ -45,6 +45,7 @@ module.exports = {
       schedule = await Schedule.create({
         id_professional,
         id_user,
+        username,
         marked_date,
         total,
         description
